@@ -59,3 +59,22 @@ You can also set the environment variable permanently editing ~/.bashrc or ~/.zs
 export PATH="$HOME/opt/cross/bin:$PATH"
 ```
 at the end of the file
+
+6) Assemble boot.s to generate multiboot header for later linking with kernel binary
+```bash
+i686-elf-as boot.s -o boot.o
+```
+
+7) Compile kernel.c with 
+```bash
+i686-elf-gcc -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
+```
+
+8) Create a simple bootable iso using grub
+```bash
+mkdir -p isodir/boot/grub
+cp myos.bin isodir/boot/myos.bin
+cp grub.cfg isodir/boot/grub/grub.cfg
+grub2-mkrescue -o myos.iso isodir
+
+```
