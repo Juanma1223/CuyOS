@@ -9,6 +9,9 @@
 
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
+// 0xB8000 Is the reference to the VGA memory buffer
+// If you write characters from this point, hey will be shown in the terminal
+// Each character takes 8 bytes
 static uint16_t* const VGA_MEMORY = (uint16_t*) 0xB8000;
 
 static size_t terminal_row;
