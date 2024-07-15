@@ -1,8 +1,11 @@
 #include <stdio.h>
+#include <string.h>
 
 #include <kernel/tty.h>
 
-void kernel_main(void) {
+void kernel_main(void)
+{
 	terminal_initialize();
-	printf("Hello, kernel World!\n");
+	printf("Welcome to CuyOS!\n");
+	printf("The operating system for you to learn!\n");
 }

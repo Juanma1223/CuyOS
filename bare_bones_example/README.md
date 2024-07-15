@@ -72,23 +72,23 @@ i686-elf-gcc -c kernel.c -o kernel.o -std=gnu99 -ffreestanding -O2 -Wall -Wextra
 
 8) Link both the kernel and the multiboot header on a single binary
 ```bash
-i686-elf-gcc -T linker.ld -o myos.bin -ffreestanding -O2 -nostdlib boot.o kernel.o -lgcc
+i686-elf-gcc -T linker.ld -o cuyos.bin -ffreestanding -O2 -nostdlib boot.o kernel.o -lgcc
 ```
 
 9) Create a simple bootable iso using grub
 ```bash
 mkdir -p isodir/boot/grub
-cp myos.bin isodir/boot/myos.bin
+cp cuyos.bin isodir/boot/cuyos.bin
 cp grub.cfg isodir/boot/grub/grub.cfg
-grub2-mkrescue -o myos.iso isodir
+grub2-mkrescue -o cuyos.iso isodir
 
 ```
 
 10) Create a virtual machine using QEMU (installation varies depending on linux distro)
 ```bash
-qemu-system-i386 -cdrom myos.iso
+qemu-system-i386 -cdrom cuyos.iso
 ```
 You can create a VM without the need of the ISO building using:
 ```bash
-qemu-system-i386 -kernel myos.bin
+qemu-system-i386 -kernel cuyos.bin
 ```

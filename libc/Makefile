@@ -27,6 +27,7 @@ CPPFLAGS:=$(CPPFLAGS) $(ARCH_CPPFLAGS)
 LIBK_CFLAGS:=$(LIBK_CFLAGS) $(KERNEL_ARCH_CFLAGS)
 LIBK_CPPFLAGS:=$(LIBK_CPPFLAGS) $(KERNEL_ARCH_CPPFLAGS)
 
+# If new source code is added, it should be placed here
 FREEOBJS=\
 $(ARCH_FREEOBJS) \
 stdio/printf.o \
