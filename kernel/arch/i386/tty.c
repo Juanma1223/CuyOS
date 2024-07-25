@@ -3,10 +3,10 @@
 #include <stdint.h>
 #include <string.h>
 #include <random.h>
-
 #include <kernel/tty.h>
-
 #include "vga.h"
+
+// This file defines the terminal functionality, in this case, using VGA buffer directly
 
 static const size_t VGA_WIDTH = 80;
 static const size_t VGA_HEIGHT = 25;
@@ -45,8 +45,14 @@ void terminal_putentryat(unsigned char c, uint8_t color, size_t x, size_t y) {
 void terminal_putchar(char c) {
 	unsigned char uc = c;
 	terminal_putentryat(uc, terminal_color, terminal_column, terminal_row);
+	if(c == '\n'){
+		terminal_row++;
+		terminal_column = 0;
+		terminal_color = vga_entry_color(terminal_row+1, VGA_COLOR_BLACK);
+	}
 	if (++terminal_column == VGA_WIDTH) {
 		terminal_column = 0;
+		terminal_row++;
 		if (++terminal_row == VGA_HEIGHT)
 			terminal_row = 0;
 	}
