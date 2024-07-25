@@ -2,11 +2,13 @@
 #include <string.h>
 
 #include <kernel/tty.h>
+#include <kernel/gdt.h>
 
 void kernel_main(void)
 {
 	terminal_initialize();
 	printf("Welcome to CuyOS! \n");
-	printf("The operating system for you to learn! \n");
-	printf("Let's get started! \n");
+	// Assembly function to initialize the Global Descriptor Table
+	setupGDT();
+	printf("GDT initialized correctly !");
 }

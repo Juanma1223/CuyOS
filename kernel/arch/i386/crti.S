@@ -6,6 +6,7 @@ _init:
 	movl %esp, %ebp
 	/* gcc will nicely put the contents of crtbegin.o's .init section here. */
 
+
 .section .fini
 .global _fini
 .type _fini, @function

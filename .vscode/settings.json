@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "tty.h": "c",
-        "cstdint": "c"
+        "cstdint": "c",
+        "functional": "cpp"
     }
 }
