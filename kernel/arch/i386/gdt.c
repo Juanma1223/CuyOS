@@ -42,8 +42,8 @@ void encodeGdtEntry(uint8_t *target, struct GDT_entry source)
 void setupGDT()
 {
     extern void setGdt();
-    // Im not if this works at all but that's fine. TODO: Test Global descriptor table
     uint32_t gdt_base = (uint32_t)0;
     uint16_t gdt_limit = (4 * 8) - 1; // 4 entries, each 8 bytes, minus 1
+    // This function is defined using assembler in set_gdt.s file
     setGdt(gdt_limit, gdt_base);
 }
