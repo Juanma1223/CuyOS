@@ -42,7 +42,7 @@ void encodeGdtEntry(uint8_t *target, struct GDT_entry source)
 void setupGDT()
 {
     extern void setGdt();
-    uint32_t gdt_base = (uint32_t)0;
+    uint32_t gdt_base = 0x0;
     uint16_t gdt_limit = (4 * 8) - 1; // 4 entries, each 8 bytes, minus 1
     // This function is defined using assembler in set_gdt.s file
     setGdt(gdt_limit, gdt_base);
