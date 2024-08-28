@@ -1,15 +1,22 @@
 #include <stdint.h>
 #include <stdio.h>
+#include <kernel/gdt.h>
 
 // In this file we define functions and structs to interact with the Global Descriptor table
 
-struct GDT_entry
+struct GDTR
 {
-    int limit;
-    int base;
-    int access_byte;
-    int flags;
+    uint16_t limit;
+    uintptr_t base;
 };
+
+// Create the new GDT base and limit pointers
+// This are the memory adresses which hold memory segments needed for many purposes such as interruptions
+// or user space applications
+static struct GDTR gdtr;
+
+// This are the segments within the GDT, these define segments of memory with specific purposes
+struct GDT_entry _gdt[GDT_DESCRIPTORS_QUANTITY];
 
 // This function is used to define a segment inside the Global Descriptor Table
 void encodeGdtEntry(uint8_t *target, struct GDT_entry source)
@@ -41,9 +48,51 @@ void encodeGdtEntry(uint8_t *target, struct GDT_entry source)
 // Assembly function to initialize the Global Descriptor Table
 void setupGDT()
 {
-    extern void setGdt();
-    uint32_t gdt_base = 0x0;
-    uint16_t gdt_limit = (4 * 8) - 1; // 4 entries, each 8 bytes, minus 1
+    // Each segment has specific use cases and as such, each has it's own privilege level and flags
+    struct GDT_entry kernel_code = {
+        .limit = 0xFFFFF,    // 1 MB limit
+        .base = 0x00000000,  // Base address 0
+        .access_byte = 0x9A, // Code segment, present, DPL 0, executable, readable
+        .flags = 0xC         // 4 KB granularity, 32-bit protected mode
+    };
+    // Start on position 1 because first position is used for the null segment
+    encodeGdtEntry((uint8_t *)&_gdt[1], kernel_code);
+
+    struct GDT_entry kernel_data = {
+        .limit = 0xFFFFF,    // 1 MB limit
+        .base = 0x00000000,  // Base address 0
+        .access_byte = 0x92, // Data segment, present, DPL 0, writable
+        .flags = 0xC         // 4 KB granularity, 32-bit protected mode
+    };
+    encodeGdtEntry((uint8_t *)&_gdt[2], kernel_data);
+
+    struct GDT_entry user_code = {
+        .limit = 0xFFFFF,    // 1 MB limit
+        .base = 0x00000000,  // Base address 0
+        .access_byte = 0xFA, // Code segment, present, DPL 3, executable, readable
+        .flags = 0xC         // 4 KB granularity, 32-bit protected mode
+    };
+    encodeGdtEntry((uint8_t *)&_gdt[3], user_code);
+
+    struct GDT_entry user_data = {
+        .limit = 0xFFFFF,    // 1 MB limit
+        .base = 0x00000000,  // Base address 0
+        .access_byte = 0xF2, // Data segment, present, DPL 3, writable
+        .flags = 0xC         // 4 KB granularity, 32-bit protected mode
+    };
+    encodeGdtEntry((uint8_t *)&_gdt[4], user_data);
+
+    // GDT base is defined by the first memory address on the GDT entries table structure
+    gdtr.base = (uintptr_t)&_gdt[0];
+    // Allocate as much space as GDT entries will be used
+    gdtr.limit = (sizeof(struct GDT_entry) * GDT_DESCRIPTORS_QUANTITY) - 1;
+
+    printf("GDT Base: %i\n", (void *)gdtr.base);
+    printf("GDT Base: %i\n", (void *)gdtr.limit);
+    // printf("GDT Limit: %x\n", gdtr.limit);
+
+    extern void setGdt(struct GDTR * gdtPointer);
     // This function is defined using assembler in set_gdt.s file
-    setGdt(gdt_limit, gdt_base);
+    // Using assembler it creates space to hold 4 segment descriptors
+    setGdt(&gdtr);
 }
