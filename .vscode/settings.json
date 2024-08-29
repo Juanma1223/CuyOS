@@ -2,6 +2,8 @@
     "files.associations": {
         "tty.h": "c",
         "cstdint": "c",
-        "functional": "cpp"
+        "functional": "cpp",
+        "idt.h": "c",
+        "stdint.h": "c"
     }
 }

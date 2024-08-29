@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdio.h>
 
 struct InterruptDescriptor32 {
    uint16_t offset_1;        // offset bits 0..15
@@ -14,3 +15,5 @@ struct IDTR {
     uint16_t limit;
     uint32_t base;
 };
+
+void setupIDT();

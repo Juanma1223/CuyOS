@@ -1,0 +1,30 @@
+#include <stdint.h>
+// In this file we define functions and structs to interact with the Global Descriptor table
+
+#define GDT_DESCRIPTORS_QUANTITY 0x04
+#define ACCESS_KERNEL_CODE 0x9A // 0x9A = 10011010b
+#define ACCESS_KERNEL_DATA 0x92 // 0x92 = 10010010b
+#define ACCESS_USER_CODE 0xFA   // 0xFA = 11111010b
+#define ACCESS_USER_DATA 0xF2   // 0xF2 = 11110010b
+
+#define FLAGS_GRANULARITY 0x0C // Granularity = 1 (4KB blocks), 32-bit mode
+
+#define SEGMENT_BASE 0x00000000
+#define SEGMENT_LIMIT 0xFFFFF // 4GB allocated space
+
+typedef struct GDT_entry
+{
+    int limit;
+    int base;
+    int access_byte;
+    int flags;
+};
+
+struct GDTR
+{
+    uint16_t limit;
+    uintptr_t base;
+};
+
+void encodeGdtEntry(uint8_t *target, struct GDT_entry source);
+void setupGDT();

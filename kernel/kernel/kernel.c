@@ -3,12 +3,14 @@
 
 #include <kernel/tty.h>
 #include <kernel/gdt.h>
+#include <kernel/idt.h>
 
-void kernel_main(void)
+void kernelMain(void)
 {
 	terminal_initialize();
 	printf("Welcome to CuyOS! \n");
-	// Assembly function to initialize the Global Descriptor Table
 	setupGDT();
-	printf("GDT initialized correctly !");
+	printf("GDT initialized correctly ! \n");
+	setupIDT();
+	printf("IDT initialized correctly ! \n");
 }
