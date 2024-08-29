@@ -4,12 +4,6 @@
 
 // In this file we define functions and structs to interact with the Global Descriptor table
 
-struct GDTR
-{
-    uint16_t limit;
-    uintptr_t base;
-};
-
 // Create the new GDT base and limit pointers
 // This are the memory adresses which hold memory segments needed for many purposes such as interruptions
 // or user space applications
@@ -89,7 +83,6 @@ void setupGDT()
 
     printf("GDT Base: %i\n", (void *)gdtr.base);
     printf("GDT Base: %i\n", (void *)gdtr.limit);
-    // printf("GDT Limit: %x\n", gdtr.limit);
 
     extern void setGdt(struct GDTR * gdtPointer);
     // This function is defined using assembler in set_gdt.s file

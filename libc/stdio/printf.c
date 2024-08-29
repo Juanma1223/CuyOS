@@ -5,11 +5,13 @@
 #include <string.h>
 #include <stdint.h>
 
+// We need the length pre-calculated because the data may not be null-terminated,
+// and we are simply printing out a sequence of bytes without knowing their specific data type.
 static bool print(const char *data, size_t length)
 {
-	const unsigned char *bytes = (const unsigned char *)data;
 	for (size_t i = 0; i < length; i++)
-		if (putchar(bytes[i]) == EOF)
+		// Bytes representation of a char, then casted to a char
+		if (putchar(data[i]) == EOF)
 			return false;
 	return true;
 }
@@ -29,18 +31,18 @@ int printf(const char *restrict format, ...)
 		{
 			if (format[0] == '%')
 				format++;
-			size_t amount = 1;
-			while (format[amount] && format[amount] != '%')
-				amount++;
-			if (maxrem < amount)
+			size_t len = 1;
+			while (format[len] && format[len] != '%')
+				len++;
+			if (maxrem < len)
 			{
 				// TODO: Set errno to EOVERFLOW.
 				return -1;
 			}
-			if (!print(format, amount))
+			if (!print(format, len))
 				return -1;
-			format += amount;
-			written += amount;
+			format += len;
+			written += len;
 			continue;
 		}
 
