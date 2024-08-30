@@ -24,9 +24,6 @@ void setupIDT()
     extern void defaultInterruptHandler();  // Declare your interrupt handler function
     extern void keyboardInterruptHandler(); // Example: handler for keyboard interrupts
 
-    idtr.base = (uintptr_t)&idt[0];
-    idtr.limit = (uint16_t)sizeof(struct InterruptDescriptor) * IDT_MAX_DESCRIPTORS - 1;
-
     // Initialize each of the interruption vectors of the IDT
     for (int i = 0; i < IDT_MAX_DESCRIPTORS; i++)
     {
@@ -44,6 +41,9 @@ void setupIDT()
             break;
         }
     }
+
+    idtr.base = (uintptr_t)&idt[0];
+    idtr.limit = (uint16_t)sizeof(struct InterruptDescriptor) * IDT_MAX_DESCRIPTORS - 1;
 
     extern void setIdt(struct IDTR * gdtPointer);
     setIdt(&idtr);
