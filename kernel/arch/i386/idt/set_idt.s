@@ -4,6 +4,6 @@
 .text
 .global setIdt
 .type setIdt, @function
-setGdt:
+setIdt:
     lidt (%esp)                   # Load the IDTR register with the IDT descriptor
     ret                           # Return from the function

@@ -16,13 +16,19 @@ void setIDTEntry(int vector, uint32_t base, uint16_t sel, uint8_t type_attr)
     idt[vector].offset_2 = (base >> 16) & 0xFFFF; // Set offset bits 16..31
 }
 
+void defaultInterruptHandler() {
+
+}; // Declare your interrupt handler function
+void keyboardInterruptHandler() {
+
+
+}; // Example: handler for keyboard interrupts
+
 void setupIDT()
 {
 
     // TODO: Make this separate files and tidy code up
     // Assembler functions to handle interruptions
-    extern void defaultInterruptHandler();  // Declare your interrupt handler function
-    extern void keyboardInterruptHandler(); // Example: handler for keyboard interrupts
 
     // Initialize each of the interruption vectors of the IDT
     for (int i = 0; i < IDT_MAX_DESCRIPTORS; i++)
