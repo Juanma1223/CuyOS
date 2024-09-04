@@ -1,4 +1,4 @@
-#include "io.h"
+#include <kernel/io.h>
 
 // This function reads a byte from an IO Port (memory address)
 inline uint8_t inb(uint16_t port)
@@ -15,7 +15,7 @@ inline void outb(uint16_t port, uint8_t value)
     __asm__ volatile("outb %0, %1" : : "a"(value), "Nd"(port));
 }
 
-static inline void io_wait(void)
+inline void io_wait(void)
 {
     outb(0x80, 0);
 }

@@ -4,6 +4,7 @@
         "cstdint": "c",
         "functional": "cpp",
         "idt.h": "c",
-        "stdint.h": "c"
+        "stdint.h": "c",
+        "io.h": "c"
     }
 }

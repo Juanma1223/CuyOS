@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include <pic.h>
-#include <io.h>
+#include <kernel/pic.h>
+#include <kernel/io.h>
 
 // This function should be called when an interruption routine service has finished
 // to inform the PIC it can receive other interruptions
