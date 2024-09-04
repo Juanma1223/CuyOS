@@ -21,7 +21,6 @@ void defaultInterruptHandler() {
 }; // Declare your interrupt handler function
 void keyboardInterruptHandler() {
 
-
 }; // Example: handler for keyboard interrupts
 
 void setupIDT()
@@ -31,19 +30,21 @@ void setupIDT()
     // Assembler functions to handle interruptions
 
     // Initialize each of the interruption vectors of the IDT
-    for (int i = 0; i < IDT_MAX_DESCRIPTORS; i++)
+    for (int vector = 0; vector < IDT_MAX_DESCRIPTORS; vector++)
     {
         // Specific purpose IDT entries
-        switch (i)
+        switch (vector)
         {
         case 33:
-            // Keyboard interrupt routine
-            setIDTEntry(i, (uint32_t)keyboardInterruptHandler, CODE_SEGMENT_SELECTOR, INTERRUPT_GATE32);
+            // IRQ1 is the interrupt request line associated with the keyboard in a typical x86 system
+            // IRQs 0-15 are mapped to interrupt vectors 32-47 (this is after the remapping of the PIC, where the PIC's IRQs are shifted to avoid conflicts with CPU exceptions).
+            // Therefore, the keyboard interrupt, which is on IRQ1, will be placed at vector 33 in the IDT (since vectors start from 0, IRQ1 maps to 32 + 1 = 33).
+            setIDTEntry(vector, (uint32_t)keyboardInterruptHandler, CODE_SEGMENT_SELECTOR, INTERRUPT_GATE32);
             break;
         default:
             // Generic IDT entries
             // TODO: Define the purpose of each entry
-            setIDTEntry(i, (uint32_t)defaultInterruptHandler, 0x08, INTERRUPT_GATE32);
+            setIDTEntry(vector, (uint32_t)defaultInterruptHandler, 0x08, INTERRUPT_GATE32);
             break;
         }
     }
