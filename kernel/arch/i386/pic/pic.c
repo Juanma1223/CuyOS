@@ -4,7 +4,7 @@
 
 // This function should be called when an interruption routine service has finished
 // to inform the PIC it can receive other interruptions
-void PIC_sendEOI(uint8_t irq)
+void PICSendEOI(uint8_t irq)
 {
     // If the IRQ is greater than 8, we are refering to the Slave PIC
     if (irq >= 8)
@@ -19,7 +19,7 @@ arguments:
         vectors on the master become offset1..offset1+7
     offset2 - same for slave PIC: offset2..offset2+7
 */
-void PIC_remap(int offset1, int offset2)
+void PICRemap(int offset1, int offset2)
 {
     uint8_t a1, a2;
 

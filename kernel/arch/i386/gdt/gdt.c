@@ -12,7 +12,7 @@ static struct GDTR gdtr;
 // This are the segments within the GDT, these define segments of memory with specific purposes
 struct GDT_entry gdt[GDT_DESCRIPTORS_QUANTITY];
 
-// This function is used to define a segment inside the Global Descriptor Table
+// This function encodes a gdt entry into an 8 bytes binary structure
 void encodeGdtEntry(uint8_t *target, struct GDT_entry source)
 {
     // Check the limit to make sure that it can be encoded

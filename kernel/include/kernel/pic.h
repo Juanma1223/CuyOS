@@ -20,5 +20,5 @@
 
 #include <stdint.h>
 
-void PIC_sendEOI(uint8_t irq);
-void PIC_remap(int offset1, int offset2);
+void PICSendEOI(uint8_t irq);
+void PICRemap(int offset1, int offset2);

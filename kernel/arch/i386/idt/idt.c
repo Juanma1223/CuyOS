@@ -18,17 +18,14 @@ void setIDTEntry(int vector, uint32_t base, uint16_t sel, uint8_t type_attr)
 
 void defaultInterruptHandler() {
 
-}; // Declare your interrupt handler function
+};
+
 void keyboardInterruptHandler() {
 
-}; // Example: handler for keyboard interrupts
+};
 
 void setupIDT()
 {
-
-    // TODO: Make this separate files and tidy code up
-    // Assembler functions to handle interruptions
-
     // Initialize each of the interruption vectors of the IDT
     for (int vector = 0; vector < IDT_MAX_DESCRIPTORS; vector++)
     {
@@ -44,7 +41,7 @@ void setupIDT()
         default:
             // Generic IDT entries
             // TODO: Define the purpose of each entry
-            setIDTEntry(vector, (uint32_t)defaultInterruptHandler, 0x08, INTERRUPT_GATE32);
+            setIDTEntry(vector, (uint32_t)defaultInterruptHandler, CODE_SEGMENT_SELECTOR, INTERRUPT_GATE32);
             break;
         }
     }

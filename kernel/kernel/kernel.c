@@ -4,6 +4,7 @@
 #include <kernel/tty.h>
 #include <kernel/gdt.h>
 #include <kernel/idt.h>
+#include <kernel/pic.h>
 
 void kernelMain(void)
 {
@@ -13,4 +14,6 @@ void kernelMain(void)
 	printf("GDT initialized correctly ! \n");
 	setupIDT();
 	printf("IDT initialized correctly ! \n");
+	PICRemap(0x20, 0x28);
+	printf("PIC remapped correctly ! \n");
 }
