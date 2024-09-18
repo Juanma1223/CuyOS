@@ -29,5 +29,3 @@ struct IDTR
 void setupIDT();
 void setIDTEntry(int vector, uint32_t base, uint16_t sel, uint8_t type_attr);
 void setIdt(struct IDTR * gdtPointer);
-void defaultInterruptHandler();  // Declare your interrupt handler function
-void keyboardInterruptHandler(); // Handler for keyboard interrupts
