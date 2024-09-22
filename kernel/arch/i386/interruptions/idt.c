@@ -29,11 +29,6 @@ void setIDTEntry(int vector, uint32_t base, uint16_t sel, uint8_t type_attr)
 extern void defaultInterruptHandler(void);
 extern void keyboardInterruptHandler(void);
 
-void keyboardInterruptWrapper(void){
-    printf("Interruption! \n");
-    keyboardInterruptHandler();
-}
-
 void setupIDT()
 {
 
@@ -46,9 +41,9 @@ void setupIDT()
         case 33:
             // IRQ1 is the interrupt request line associated with the keyboard in a typical x86 system
             // IRQs 0-15 are mapped to interrupt vectors 32-47 (this is after the remapping of the PIC, where the PIC's IRQs are shifted to avoid conflicts with CPU exceptions).
-            // Therefore, the keyboard interrupt, which is on IRQ1, will be placed at vector 33 in the IDT (since vectors start from 0, IRQ1 maps to 32 + 1 = 33).
-            setIDTEntry(vector, (uint32_t)keyboardInterruptWrapper, CODE_SEGMENT_SELECTOR, INTERRUPT_GATE32);
-            printf("Keyboard ISR Address: %p\n", keyboardInterruptWrapper);
+            // Therefore, the keyboard inte rrupt, which is on IRQ1, will be placed at vector 33 in the IDT (since vectors start from 0, IRQ1 maps to 32 + 1 = 33).
+            setIDTEntry(vector, (uint32_t)keyboardInterruptHandler, CODE_SEGMENT_SELECTOR, INTERRUPT_GATE32);
+            printf("Keyboard ISR Address: %p\n", keyboardInterruptHandler);
             break;
         default:
             // Generic IDT entries
