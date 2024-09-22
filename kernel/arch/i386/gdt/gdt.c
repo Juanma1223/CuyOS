@@ -43,6 +43,15 @@ void encodeGdtEntry(uint8_t *target, struct GDT_entry source)
 void setupGDT()
 {
     // Each segment has specific use cases and as such, each has it's own privilege level and flags
+
+    struct GDT_entry nullSegment = {
+        .limit = 0xFFFFF,
+        .base = 0x00000000,
+        .access_byte = 0x00,
+        .flags = 0x0};
+    // Start on position 1 because first position is used for the null segment
+    encodeGdtEntry((uint8_t *)&gdt[0], nullSegment);
+
     struct GDT_entry kernel_code = {
         .limit = 0xFFFFF,    // 1 MB limit
         .base = 0x00000000,  // Base address 0
@@ -78,11 +87,11 @@ void setupGDT()
 
     // GDT base is defined by the first memory address on the GDT entries table structure
     gdtr.base = (uintptr_t)&gdt[0];
-    // Allocate as much space as GDT entries will be used
-    gdtr.limit = (sizeof(struct GDT_entry) * GDT_DESCRIPTORS_QUANTITY) - 1;
+    // Allocate as much space as GDT entries will be used, each entry is 8 bytes long
+    gdtr.limit = (sizeof(struct GDT_entry)*GDT_DESCRIPTORS_QUANTITY)-1;
 
     printf("GDT Base: %i\n", (void *)gdtr.base);
-    printf("GDT Base: %i\n", (void *)gdtr.limit);
+    printf("GDT Limit: %i\n", (void *)gdtr.limit);
 
     extern void setGdt(struct GDTR * gdtPointer);
     // This function is defined using assembler in set_gdt.s file

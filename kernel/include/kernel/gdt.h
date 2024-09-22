@@ -1,7 +1,7 @@
 #include <stdint.h>
 // In this file we define functions and structs to interact with the Global Descriptor table
 
-#define GDT_DESCRIPTORS_QUANTITY 0x04
+#define GDT_DESCRIPTORS_QUANTITY 0x05
 #define ACCESS_KERNEL_CODE 0x9A // 0x9A = 10011010b
 #define ACCESS_KERNEL_DATA 0x92 // 0x92 = 10010010b
 #define ACCESS_USER_CODE 0xFA   // 0xFA = 11111010b

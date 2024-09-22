@@ -5,6 +5,7 @@
         "functional": "cpp",
         "idt.h": "c",
         "stdint.h": "c",
-        "io.h": "c"
+        "io.h": "c",
+        "*.tcc": "c"
     }
 }

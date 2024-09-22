@@ -1,6 +1,7 @@
 .section text
-.global defaultInterruptHandler
-defaultInterruptHandler:
+.global keyboardInterruptHandler
+.type keyboardInterruptHandler, @function
+keyboardInterruptHandler:
     pusha                         # Save all general-purpose registers
     push %ds                      # Save data segment register
     push %es
@@ -15,11 +16,14 @@ defaultInterruptHandler:
 
     # Interrupt handling logic goes here
     # For example, code to handle a specific interrupt like keyboard input or timer
+    inb $0x60, %al                # Read the scancode from the keyboard into AX
+    
+    # For debugging, store scancode in %esi to check if handler is working
+    mov %al, %bl                 # Store the scancode in %bl
 
     # Send End of Interrupt (EOI) signal to PIC
     mov $0x20, %al                # Load 0x20 into AL (EOI command)
-    outb %al, $0x20               # Send EOI to the Master PIC
-    outb %al, $0xA0               # Send EOI to the Slave PIC (only for IRQs 8-15)
+    outb %al, $0x20               # Send EOI to the Master PIC (IRQ1 is in the Master PIC range)
 
     pop %gs                       # Restore segment registers
     pop %fs

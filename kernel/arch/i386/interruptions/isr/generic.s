@@ -1,5 +1,6 @@
 .section text
 .global defaultInterruptHandler
+.type defaultInterruptHandler, @function
 defaultInterruptHandler:
     pusha                         # Save all general-purpose registers
     push %ds                      # Save data segment register
