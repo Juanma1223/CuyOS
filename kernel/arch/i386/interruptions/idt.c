@@ -28,6 +28,7 @@ void setIDTEntry(int vector, uint32_t base, uint16_t sel, uint8_t type_attr)
 // Interruption Service Routines are defined on separate assembly files
 extern void defaultInterruptHandler(void);
 extern void keyboardInterruptHandler(void);
+extern void timerInterruptHandler(void);
 
 void setupIDT()
 {
@@ -38,6 +39,8 @@ void setupIDT()
         // Specific purpose IDT entries
         switch (vector)
         {
+        case 32:
+            setIDTEntry(vector, (uint32_t)timerInterruptHandler, CODE_SEGMENT_SELECTOR, INTERRUPT_GATE32);
         case 33:
             // IRQ1 is the interrupt request line associated with the keyboard in a typical x86 system
             // IRQs 0-15 are mapped to interrupt vectors 32-47 (this is after the remapping of the PIC, where the PIC's IRQs are shifted to avoid conflicts with CPU exceptions).

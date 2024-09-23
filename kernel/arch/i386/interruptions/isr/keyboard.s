@@ -5,7 +5,6 @@
 .global keyboardInterruptHandler
 .type keyboardInterruptHandler, @function
 keyboardInterruptHandler:
-    cli
     pusha                         # Save all general-purpose registers
     push %ds                      # Save data segment register
     push %es
@@ -18,13 +17,11 @@ keyboardInterruptHandler:
     mov %ax, %fs                  # Set FS to the kernel data segment
     mov %ax, %gs                  # Set GS to the kernel data segment
 
-    # Interrupt handling logic goes here
-    # For example, code to handle a specific interrupt like keyboard input or timer
-    inb $0x60, %al                # Read the scancode from the keyboard into AX
+    # Interrupt handling logic
+    inb $0x60, %al                # Read the scancode from the keyboard into AL
     
-    # For debugging, store scancode in %esi to check if handler is working
-    mov %al, %bl                 # Store the scancode in %bl
-    # mov $1, %ebx
+    # Move scancode to EBX for debugging
+    movzx %al, %ebx               # Zero-extend the AL into EBX, ensuring EBX reflects the scancode
 
     # Send End of Interrupt (EOI) signal to PIC
     mov $0x20, %al                # Load 0x20 into AL (EOI command)
@@ -35,5 +32,4 @@ keyboardInterruptHandler:
     pop %es
     pop %ds
     popa                          # Restore general-purpose registers
-    sti
     iret                          # Return from interrupt
