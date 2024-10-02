@@ -24,7 +24,7 @@ struct IDTR
 {
     uint16_t limit;
     uint32_t base;
-};
+} __attribute__((packed));
 
 void setupIDT();
 void setIDTEntry(int vector, uint32_t base, uint16_t sel, uint8_t type_attr);

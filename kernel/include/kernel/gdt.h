@@ -15,17 +15,17 @@
 // This struct is encoded to be placed into the GDT, it is required to be 8 bytes long
 typedef struct GDT_entry
 {
-    uint16_t limit;
+    int limit;
     uint16_t base;
     uint16_t access_byte;
     uint16_t flags;
-};
+} __attribute__((packed));
 
 struct GDTR
 {
     uint16_t limit;
     uintptr_t base;
-};
+} __attribute__((packed));
 
 void encodeGdtEntry(uint8_t *target, struct GDT_entry source);
 void setupGDT();

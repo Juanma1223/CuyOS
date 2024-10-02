@@ -16,10 +16,10 @@ struct GDT_entry gdt[GDT_DESCRIPTORS_QUANTITY];
 void encodeGdtEntry(uint8_t *target, struct GDT_entry source)
 {
     // Check the limit to make sure that it can be encoded
-    if (source.limit > 0xFFFFF)
-    {
-        printf("GDT cannot encode limits larger than 0xFFFFF");
-    }
+    // if (source.limit > 0xFFFFF)
+    // {
+    //     printf("GDT cannot encode limits larger than 0xFFFFF");
+    // }
 
     // Encode the limit
     target[0] = source.limit & 0xFF;
@@ -94,7 +94,9 @@ void setupGDT()
     printf("GDT Limit: %i\n", (void *)gdtr.limit);
 
     extern void setGdt(struct GDTR * gdtPointer);
+    // extern void reloadGdt();
     // This function is defined using assembler in set_gdt.s file
     // Using assembler it creates space to hold 4 segment descriptors
     setGdt(&gdtr);
+    // reloadGdt();
 }

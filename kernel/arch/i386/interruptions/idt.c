@@ -41,6 +41,7 @@ void setupIDT()
         {
         case 32:
             setIDTEntry(vector, (uint32_t)timerInterruptHandler, CODE_SEGMENT_SELECTOR, INTERRUPT_GATE32);
+            break;
         case 33:
             // IRQ1 is the interrupt request line associated with the keyboard in a typical x86 system
             // IRQs 0-15 are mapped to interrupt vectors 32-47 (this is after the remapping of the PIC, where the PIC's IRQs are shifted to avoid conflicts with CPU exceptions).
@@ -60,5 +61,6 @@ void setupIDT()
     idtr.limit = (uint16_t)sizeof(struct InterruptDescriptor) * IDT_MAX_DESCRIPTORS - 1;
 
     extern void setIdt(struct IDTR * gdtPointer);
+
     setIdt(&idtr);
 }
