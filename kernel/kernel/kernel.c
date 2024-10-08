@@ -16,9 +16,10 @@ void kernelMain(void)
 	printf("IDT initialized correctly ! \n");
 	PICRemap(0x20, 0x28);
 	printf("PIC remapped correctly ! \n");
+
 	while (1)
 	{
 		// Main kernel loop
-		__asm__ __volatile__("hlt"); // Halt the CPU until the next interrupt
+		asm("hlt"); // Halt the CPU until the next interrupt
 	}
 }

@@ -21,10 +21,12 @@ void encodeGdtEntry(uint8_t *target, struct GDT_entry source)
         printf("GDT cannot encode limits larger than 0xFFFFF");
     }
 
+
+
     // Encode the limit
-    target[0] = source.limit & 0xFF;
-    target[1] = (source.limit >> 8) & 0xFF;
-    target[6] = (source.limit >> 16) & 0x0F;
+    target[0] = 0xFFFFF & 0xFF;
+    target[1] = (0xFFFFF >> 8) & 0xFF;
+    target[6] = (0xFFFFF >> 16) & 0x0F;
 
     // Encode the base
     target[2] = source.base & 0xFF;

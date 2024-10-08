@@ -32,8 +32,9 @@ extern void timerInterruptHandler(void);
 
 void load_idt()
 {
-    asm("lgdt %0" : : "m"(idtr));
+    asm("lidt %0" : : "m"(idtr));
 }
+
 
 void setupIDT()
 {
@@ -67,5 +68,5 @@ void setupIDT()
 
     load_idt();
     // Enable interrupts
-    __asm__ __volatile__("sti");
+    asm("sti");
 }
