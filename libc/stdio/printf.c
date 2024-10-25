@@ -48,8 +48,9 @@ int printf(const char *restrict format, ...)
 
 		const char *format_begun_at = format++;
 
-		if (*format == 'c')
+		switch (*format)
 		{
+		case 'c':
 			format++;
 			char c = (char)va_arg(parameters, int /* char promotes to int */);
 			if (!maxrem)
@@ -60,9 +61,8 @@ int printf(const char *restrict format, ...)
 			if (!print(&c, sizeof(c)))
 				return -1;
 			written++;
-		}
-		else if (*format == 's')
-		{
+			break;
+		case 's':
 			format++;
 			const char *str = va_arg(parameters, const char *);
 			size_t len = strlen(str);
@@ -74,9 +74,8 @@ int printf(const char *restrict format, ...)
 			if (!print(str, len))
 				return -1;
 			written += len;
-		}
-		else if (*format == 'i')
-		{
+			break;
+		case 'i':
 			format++;
 			int num = (int)va_arg(parameters, int);
 
@@ -130,9 +129,8 @@ int printf(const char *restrict format, ...)
 				// Update the written count
 				written += len;
 			}
-		}
-		else if (*format == 'p')
-		{
+			break;
+		case 'p':
 			format++;
 			void *ptr = va_arg(parameters, void *);
 			// This buffer will store the whole formated hex value of the pointer we are printing
@@ -163,9 +161,9 @@ int printf(const char *restrict format, ...)
 			if (!print(p, len))
 				return -1;
 			written += len;
-		}
-		else
-		{
+			break;
+
+		default:
 			format = format_begun_at;
 			size_t len = strlen(format);
 			if (maxrem < len)
@@ -177,6 +175,7 @@ int printf(const char *restrict format, ...)
 				return -1;
 			written += len;
 			format += len;
+			break;
 		}
 	}
 

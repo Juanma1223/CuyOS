@@ -3,7 +3,7 @@
 .type reloadGdt, @function
 reloadGdt:
     mov $0x10, %eax 
-    # mov %eax, %ss 
+    mov %eax, %ss 
     mov %eax, %ds 
     mov %eax, %es 
     mov %eax, %fs 

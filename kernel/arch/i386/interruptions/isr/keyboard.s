@@ -17,11 +17,12 @@ keyboardInterruptHandler:
     mov %ax, %fs                  # Set FS to the kernel data segment
     mov %ax, %gs                  # Set GS to the kernel data segment
 
+    call keyboardISR
     # Interrupt handling logic
-    inb $0x60, %al                # Read the scancode from the keyboard into AL
+    ; inb $0x60, %al                # Read the scancode from the keyboard into AL
     
     # Move scancode to EBX for debugging
-    movzx %al, %ebx               # Zero-extend the AL into EBX, ensuring EBX reflects the scancode
+    ; movzx %al, %ebx               # Zero-extend the AL into EBX, ensuring EBX reflects the scancode
 
     # Send End of Interrupt (EOI) signal to PIC
     mov $0x20, %al                # Load 0x20 into AL (EOI command)
