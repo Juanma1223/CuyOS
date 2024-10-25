@@ -80,9 +80,9 @@ int printf(const char *restrict format, ...)
 			int num = (int)va_arg(parameters, int);
 
 			// This buffer is used to hold the smallest negative number as a string
-			char buffer[12];
+			char intBuffer[12];
 			// This points to the end of the array
-			char *p = buffer + sizeof(buffer) - 1;
+			char *p = intBuffer + sizeof(intBuffer) - 1;
 			// Add null pointer to the end of the buffer
 			*p = '\0'; // Null-terminate the buffer
 
@@ -111,7 +111,7 @@ int printf(const char *restrict format, ...)
 				}
 
 				// Calculate the length of the resulting string, being p the pointer to the left over
-				size_t len = buffer + sizeof(buffer) - 1 - p;
+				size_t len = intBuffer + sizeof(intBuffer) - 1 - p;
 
 				// Check if the length exceeds the remaining buffer size
 				if (maxrem < len)
@@ -134,47 +134,47 @@ int printf(const char *restrict format, ...)
 			format++;
 			void *ptr = va_arg(parameters, void *);
 			// This buffer will store the whole formated hex value of the pointer we are printing
-			char buffer[2 + sizeof(uintptr_t) * 2 + 1]; // "0x" + hex digits + null terminator
-			buffer[0] = '0';
-			buffer[1] = 'x';
+			char hexBuffer[2 + sizeof(uintptr_t) * 2 + 1]; // "0x" + hex digits + null terminator
+			hexBuffer[0] = '0';
+			hexBuffer[1] = 'x';
 			// Place the pointer at the end of the hex number
-			char *p = &buffer[2 + sizeof(uintptr_t) * 2];
+			char *hexPointer = &hexBuffer[2 + sizeof(uintptr_t) * 2];
 			// Add the null character
-			*p = '\0';
+			*hexPointer = '\0';
 			uintptr_t value = (uintptr_t)ptr;
 			// Convert decimal into hex
 			while (value)
 			{
-				*--p = "0123456789abcdef"[value % 16];
+				*--hexPointer = "0123456789abcdef"[value % 16];
 				value /= 16;
 			}
-			if (p == &buffer[2 + sizeof(uintptr_t) * 2])
+			if (hexPointer == &hexBuffer[2 + sizeof(uintptr_t) * 2])
 			{
-				*--p = '0';
+				*--hexPointer = '0';
 			}
-			size_t len = &buffer[2 + sizeof(uintptr_t) * 2] - p;
-			if (maxrem < len)
+			size_t hexLen = &hexBuffer[2 + sizeof(uintptr_t) * 2] - hexPointer;
+			if (maxrem < hexLen)
 			{
 				// TODO: Set errno to EOVERFLOW.
 				return -1;
 			}
-			if (!print(p, len))
+			if (!print(hexPointer, hexLen))
 				return -1;
-			written += len;
+			written += hexLen;
 			break;
 
 		default:
 			format = format_begun_at;
-			size_t len = strlen(format);
-			if (maxrem < len)
+			size_t strLen = strlen(format);
+			if (maxrem < strLen)
 			{
 				// TODO: Set errno to EOVERFLOW.
 				return -1;
 			}
-			if (!print(format, len))
+			if (!print(format, strLen))
 				return -1;
-			written += len;
-			format += len;
+			written += strLen;
+			format += strLen;
 			break;
 		}
 	}
