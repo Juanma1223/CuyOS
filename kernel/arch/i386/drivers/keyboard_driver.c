@@ -9,7 +9,5 @@ void setKeyboardScancode(int scancode)
     io_wait();
     outb(0x60, scancode);
     int firstCode = inb(0x60);
-    printf("first code: %p \n", firstCode);
     int secondeCode = inb(0x61);
-    printf("second code: %p \n", secondeCode);
 }

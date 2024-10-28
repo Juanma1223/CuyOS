@@ -1,1 +1,0 @@
-void setKeyboardScancode(int scancode);
