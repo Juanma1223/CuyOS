@@ -14,12 +14,12 @@ void kernelMain(void)
 	printf("Welcome to CuyOS! \n");
 	setupGDT();
 	printf("GDT initialized correctly ! \n");
+	setKeyboardScancode(2);
+	printf("Keyboard scancode set initialized correctly ! \n");
 	setupIDT();
 	printf("IDT initialized correctly ! \n");
 	PICRemap(0x20, 0x28);
 	printf("PIC remapped correctly ! \n");
-
-	setKeyboardScancode(2);
 
 	while (1)
 	{

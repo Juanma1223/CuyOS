@@ -162,6 +162,34 @@ int printf(const char *restrict format, ...)
 				return -1;
 			written += hexLen;
 			break;
+		case 'b':
+			format++;
+			void *binPtr = va_arg(parameters, void *);
+			// This buffer will store the whole formated binary value of the pointer we are printing
+			char binBuffer[2 + sizeof(uintptr_t) * 2 + 1]; // "0b" + binary digits + null terminator
+			binBuffer[0] = '0';
+			binBuffer[1] = 'b';
+			// Place the pointer at the end of the binary number
+			char *binPointer = &binBuffer[2 + sizeof(uintptr_t) * 2];
+			// Add the null character
+			*binPointer = '\0';
+			uintptr_t binValue = (uintptr_t)binPtr;
+			// Convert decimal into hex
+			while (binValue)
+			{
+				*--binPointer = "01"[binValue % 2];
+				binValue /= 2;
+			}
+			size_t binLen = &binBuffer[2 + sizeof(uintptr_t) * 2] - binPointer;
+			if (maxrem < binLen)
+			{
+				// TODO: Set errno to EOVERFLOW.
+				return -1;
+			}
+			if (!print(binPointer, binLen))
+				return -1;
+			written += binLen;
+			break;
 
 		default:
 			format = format_begun_at;

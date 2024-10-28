@@ -1,18 +1,15 @@
 #include <kernel/io.h>
 #include <stdio.h>
+#include <stdint.h>
 
 void setKeyboardScancode(int scancode)
 {
-    // Check keyboard scancode set
-    outb(0x64, 0x20);
-    int set = inb(0x60);
-
-    printf("Keyboard is using set: %i", set);
-
-    // Set keyboard scancode to 2
-    outb(0x60,0xF00 + scancode);
-    int firstCode = inb(0x64);
-    printf("first code: %i",firstCode);
-    int secondeCode = inb(0x64);
-    printf("second code: %i",secondeCode);
+    // Set scancode
+    outb(0x60, 0xF0);
+    io_wait();
+    outb(0x60, scancode);
+    int firstCode = inb(0x60);
+    printf("first code: %p \n", firstCode);
+    int secondeCode = inb(0x61);
+    printf("second code: %p \n", secondeCode);
 }

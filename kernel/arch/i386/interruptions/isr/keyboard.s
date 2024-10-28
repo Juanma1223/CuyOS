@@ -17,7 +17,7 @@ keyboardInterruptHandler:
     mov %ax, %fs                  # Set FS to the kernel data segment
     mov %ax, %gs                  # Set GS to the kernel data segment
 
-    call keyboardISR
+    call keyboardDriver
     # Interrupt handling logic
     ; inb $0x60, %al                # Read the scancode from the keyboard into AL
     
