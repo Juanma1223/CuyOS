@@ -6,4 +6,5 @@ set -e
 
 # Used while debugging
 # qemu-system-$(./target-triplet-to-arch.sh $HOST) -kernel ./kernel/cuyos.kernel -monitor stdio -s -S
-qemu-system-$(./target-triplet-to-arch.sh $HOST) -kernel ./kernel/cuyos.kernel -monitor stdio -s
+# qemu-system-$(./target-triplet-to-arch.sh $HOST) -kernel ./kernel/cuyos.kernel -monitor stdio -s
+qemu-system-i386 -boot d -cdrom ./cuyos.iso -monitor stdio -s

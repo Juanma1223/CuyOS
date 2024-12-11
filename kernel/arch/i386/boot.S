@@ -1,31 +1,50 @@
-# Declare constants for the multiboot header.
-.set ALIGN,    1<<0             # align loaded modules on page boundaries
-.set MEMINFO,  1<<1             # provide memory map
-.set FLAGS,    ALIGN | MEMINFO  # this is the Multiboot 'flag' field
-.set MAGIC,    0x1BADB002       # 'magic number' lets bootloader find the header
-.set CHECKSUM, -(MAGIC + FLAGS) # checksum of above, to prove we are multiboot
+.section .mb2_hdr
 
-# Declare a header as in the Multiboot Standard.
-.section .multiboot
-.align 4
-.long MAGIC
-.long FLAGS
-.long CHECKSUM
+# multiboot2 header: magic number, mode, length, checksum
+mb2_hdr_begin:
+.long 0xE85250D6
+.long 0
+.long (mb2_hdr_end - mb2_hdr_begin)
+.long -(0xE85250D6 + (mb2_hdr_end - mb2_hdr_begin))
 
-# Reserve a stack for the initial thread.
-.section .bss
-.align 16
-stack_bottom:
-.skip 16384 # 16 KiB
-stack_top:
+# framebuffer tag: type = 5
+.align 8
+mb2_framebuffer_req:
+    .short 5
+    .short 0
+    .long (mb2_framebuffer_end - mb2_framebuffer_req)
+    # preferred width, height, bpp.
+    # leave as zero to indicate "don't care"
+    .long 0
+    .long 0
+    .long 0
+mb2_framebuffer_end:
+.align 8
+
+# the end tag: type = 0, size = 8
+.long 0
+.long 8
+mb2_hdr_end:
+
+.section .data
+boot_stack_base:
+    .byte 0x1000
+
+# backup the address of mb2 info struct, since ebx may be clobbered
+.section .mb_text
+    mov %ebx, %edi
+
+    # setup a stack, and reset flags
+    mov $(boot_stack_base + 0x1000), %esp
+    pushl $0x2
+    popf
+
 
 # The kernel entry point.
 .section .text
 .global _start
 .type _start, @function
 _start:
-	movl $stack_top, %esp
-
 	# Call the global constructors.
 	call _init
 
