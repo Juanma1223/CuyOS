@@ -7,10 +7,13 @@
 #include <kernel/idt.h>
 #include <kernel/pic.h>
 #include <kernel/keyboard_driver.h>
+#include <kernel/screen_driver.h>
 
-void kernelMain(void)
+// Receive multiboot headers information
+void kernelMain(uint32_t multiboot_info_addr)
 {
-	terminal_initialize();
+	// terminal_initialize(); 
+	parse_multiboot(multiboot_info_addr);
 	printf("Welcome to CuyOS! \n");
 	setupGDT();
 	printf("GDT initialized correctly ! \n");

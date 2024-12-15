@@ -6,6 +6,12 @@
         "idt.h": "c",
         "stdint.h": "c",
         "io.h": "c",
-        "*.tcc": "c"
+        "*.tcc": "c",
+        "screen_driver.h": "c",
+        "array": "c",
+        "string": "c",
+        "string_view": "c",
+        "span": "c",
+        "image.h": "c"
     }
 }
