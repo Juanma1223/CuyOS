@@ -9,26 +9,24 @@ mb2_hdr_begin:
 
 # framebuffer tag: type = 5
 .align 8
-mb2_framebuffer_req:
-    .short 5
-    .short 0
-    .long (mb2_framebuffer_end - mb2_framebuffer_req)
-    # preferred width, height, bpp.
-    # leave as zero to indicate "don't care"
-    .long 0
-    .long 0
-    .long 0
-mb2_framebuffer_end:
+framebuffer_tag_start:
+    .short 0x05  # Type: framebuffer
+    .short 0x01  # Optional tag
+    .long 0x20  # Size
+    .long 0  # Width - if 0, let the bootloader decide
+    .long 0  # Height - same as above
+    .long 0  # Depth  - same as above
+framebuffer_tag_end:
 .align 8
 
 # the end tag: type = 0, size = 8
-.long 0
-.long 8
+.long 0x0
+.long 0x08
 mb2_hdr_end:
 
 .section .data
 boot_stack_base:
-    .byte 0x1000
+    .word 0x1000
 
 # backup the address of mb2 info struct, since ebx may be clobbered
 .section .mb_text

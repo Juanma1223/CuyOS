@@ -1,7 +1,7 @@
 #include <screen_driver.h>
 #include <image.h>
 
-uint32_t * calculatePixel(int x, int y, struct multiboot_tag_framebuffer *fb)
+uint32_t *calculatePixel(int x, int y, struct multiboot_tag_framebuffer *fb)
 {
     int row = y * fb->framebuffer_pitch;
     int column = x * fb->framebuffer_bpp;
