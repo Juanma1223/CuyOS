@@ -1,4 +1,5 @@
 #!/bin/sh
+make clean
 make
 
 mkdir -p isodir

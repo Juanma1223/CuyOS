@@ -12,7 +12,7 @@
 // Receive multiboot headers information
 void kernelMain(uint32_t multiboot_info_addr)
 {
-	// terminal_initialize(); 
+	terminal_initialize(); 
 	parse_multiboot(multiboot_info_addr);
 	printf("Welcome to CuyOS! \n");
 	setupGDT();

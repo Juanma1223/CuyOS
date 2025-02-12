@@ -5,7 +5,7 @@ CC=clang
 AS=as
 LD=ld
 TARGET=i386-elf
-CFLAGS=-g -m32 -ffreestanding -nostdlib -mno-red-zone -Wall -Wextra -I $(SRCDIR)/include
+CFLAGS=-g -m32 -ffreestanding -nostdlib -mno-red-zone -Wall -Wextra -march=i386 -I $(SRCDIR)/include
 LDFLAGS=-m elf_i386 -T src/kernel/arch/i386/linker.ld --nostdlib
 
 # Find all source files
@@ -25,7 +25,7 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c
 
 $(OBJDIR)/%.o: $(SRCDIR)/%.S
 	mkdir -p $(dir $@)
-	$(AS) --32 $< -o $@
+	$(AS) --32 -c $< -o $@
 
 # Linking
 kernel.elf: $(OBJECTS)

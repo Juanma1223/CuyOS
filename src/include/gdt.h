@@ -13,7 +13,7 @@
 #define SEGMENT_LIMIT 0xFFFFF // 4GB allocated space
 
 // This struct is encoded to be placed into the GDT, it is required to be 8 bytes long
-typedef struct GDT_entry
+struct GDT_entry
 {
     uint16_t limit;
     uint16_t base;
