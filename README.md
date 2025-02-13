@@ -3,11 +3,11 @@
 ## `/kernel` Folder
 The `/kernel` folder contains all the code related to the OS kernel functionality, including:
 
-- **Architecture-Dependent Code:** 
+- **Architecture-Dependent Code:**
   - Located in `/kernel/arch`, this section holds platform-specific code, such as for the x86 architecture.
 
 ## `/libc` Folder
-The `/libc` folder includes the C standard library implementation necessary for the cross-compiler to work properly. This folder contains:
+The `/libc` folder includes the C standard library implementation necessary for the OS. This folder contains:
 
 - **Standard Libraries:**
   - Libraries required to use C as the programming language.
@@ -19,54 +19,30 @@ The `/libc` folder includes the C standard library implementation necessary for 
 To compile CuyOS, follow these steps:
 
 1. **Download Dependencies:**
-   - Refer to the [OSDev - Building GCC](https://wiki.osdev.org/Building_GCC) guide for a list of required dependencies.
-
-2. **Clone GCC and Binutils Source Code:**
-   - Clone the source code for GCC and Binutils to set up a cross-compiling environment:
+   - Ensure you have Clang installed with 32-bit support.
+   - Install Clang and necessary dependencies:
      ```bash
-     git clone git://sourceware.org/git/binutils-gdb.git
-     ```
-     ```bash
-     git clone git://gcc.gnu.org/git/gcc.git
+     sudo apt update
+     sudo apt install clang lld lldb libc-dev-i386 gcc-multilib
      ```
 
-3. **Set Compilation Environment Variables:**
-   - Configure the environment to compile cross-compiling tools into `~/opt/cross/`:
+2. **Clone the Repository:**
+   - Clone the source code for CuyOS:
      ```bash
-     export PREFIX="$HOME/opt/cross"
-     export TARGET=i686-elf
-     export PATH="$PREFIX/bin:$PATH"
+     git clone https://github.com/your-repo/cuyos.git
+     cd cuyos
      ```
 
-4. **Compile Binutils:**
-   - Build Binutils for the target system:
-     ```bash 
-     mkdir build-binutils
-     cd build-binutils
-     ../binutils-x.y.z/configure --target=$TARGET --prefix="$PREFIX" --with-sysroot --disable-nls --disable-werror
+3. **Build CuyOS:**
+   - Use the provided Makefile to compile the OS:
+     ```bash
      make
-     make install
      ```
 
-5. **Compile GCC:**
-   - Build GCC for the target system:
-     ```bash
-     cd $HOME/src
-     
-     # Ensure $TARGET-as is in the PATH
-     which -- $TARGET-as || echo $TARGET-as is not in the PATH
-     
-     mkdir build-gcc
-     cd build-gcc
-     ../gcc-x.y.z/configure --target=$TARGET --prefix="$PREFIX" --disable-nls --enable-languages=c,c++ --without-headers
-     make all-gcc
-     make all-target-libgcc
-     make install-gcc
-     make install-target-libgcc
-     ```
-
-6. **Modify `default-host.sh`:**
-   - Update this script with the directory of your cross-compiled tools.
-
-7. **Run CuyOS on a Virtual Machine:**
+4. **Run CuyOS on a Virtual Machine:**
    - Install QEMU and then execute `qemu.sh` to create a virtual machine with CuyOS running on it.
+     ```bash
+     sudo apt install qemu-system-i386  # Debian-based systems
+     ./qemu.sh
+     ```
+
