@@ -29,7 +29,7 @@ To compile CuyOS, follow these steps:
 2. **Clone the Repository:**
    - Clone the source code for CuyOS:
      ```bash
-     git clone https://github.com/your-repo/cuyos.git
+     git clone https://github.com/Juanma1223/CuyOS.git
      cd cuyos
      ```
 
