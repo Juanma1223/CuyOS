@@ -10,7 +10,7 @@
 #include <screen_driver.h>
 
 // Receive multiboot headers information
-void kernelMain(uint32_t multiboot_info_addr)
+void kernelMain(void* multiboot_info_addr)
 {
 	terminal_initialize(); 
 	parse_multiboot(multiboot_info_addr);

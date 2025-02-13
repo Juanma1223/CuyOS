@@ -27,7 +27,7 @@ boot_stack_base:
     .word 0x1000
 
 # backup the address of mb2 info struct, since ebx may be clobbered
-.section .mb_text
+# .section .mb_text
     mov %ebx, %edi
 
     # setup a stack, and reset flags
@@ -42,8 +42,8 @@ boot_stack_base:
 .type _start, @function
 _start:
 	# Call the global constructors.
-	call _init
-
+	# call _init
+    push %ebx
 	# Transfer control to the main kernel.
 	call kernelMain
 

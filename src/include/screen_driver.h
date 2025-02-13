@@ -18,4 +18,4 @@ struct multiboot_tag_framebuffer {
     uint16_t reserved;
 };
 
-void parse_multiboot(uint32_t addr);
+void parse_multiboot(void* addr);
