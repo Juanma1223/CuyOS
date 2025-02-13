@@ -1,15 +1,15 @@
 #!/bin/sh
-set -e
-. ./build.sh
+make clean
+make
 
 mkdir -p isodir
 mkdir -p isodir/boot
 mkdir -p isodir/boot/grub
 
-cp sysroot/boot/cuyos.kernel isodir/boot/cuyos.kernel
+mv kernel.elf isodir/boot/cuyos.kernel
 cat > isodir/boot/grub/grub.cfg << EOF
 menuentry "cuyos" {
-	multiboot /boot/cuyos.kernel
+	multiboot2 /boot/cuyos.kernel
 }
 EOF
 grub2-mkrescue -o cuyos.iso isodir
