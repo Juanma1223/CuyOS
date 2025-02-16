@@ -1,12 +1,14 @@
 #define MULTIBOOT_TAG_TYPE_FRAMEBUFFER 8
 #include <stdint.h>
 
-struct multiboot_tag {
+struct multiboot_tag
+{
     uint32_t type;
     uint32_t size;
 };
 
-struct multiboot_tag_framebuffer {
+struct multiboot_tag_framebuffer
+{
     uint32_t type;
     uint32_t size;
     uint64_t framebuffer_addr;
@@ -21,12 +23,12 @@ struct multiboot_tag_framebuffer {
 // PSF Font struct
 #include <stdint.h>
 
-struct PSF1_HEADER {
-        unsigned char magic[2];     /* Magic number */
-        unsigned char mode;         /* PSF font mode */
-        unsigned char charsize;     /* Character size */
+struct PSF1_HEADER
+{
+    unsigned char magic[2]; /* Magic number */
+    unsigned char mode;     /* PSF font mode */
+    unsigned char charsize; /* Character size */
 };
 
-
-
-void init_framebuffer(void* multiboot_addr);
+void init_framebuffer(void *multiboot_addr);
+void draw_char(char character, uint16_t x, uint16_t y);

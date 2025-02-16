@@ -12,6 +12,8 @@
         "string": "c",
         "string_view": "c",
         "span": "c",
-        "image.h": "c"
+        "image.h": "c",
+        "random": "c",
+        "random.h": "c"
     }
 }
