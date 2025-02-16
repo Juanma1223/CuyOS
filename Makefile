@@ -16,7 +16,7 @@ ASM_SOURCES=$(shell find $(SRCDIR) -name "*.s" -o -name "*.S")
 C_OBJECTS=$(patsubst $(SRCDIR)/%, $(OBJDIR)/%, $(C_SOURCES:.c=.o))
 ASM_OBJECTS=$(patsubst $(SRCDIR)/%, $(OBJDIR)/%, $(ASM_SOURCES:.S=.o))
 
-OBJECTS=$(C_OBJECTS) $(ASM_OBJECTS)
+OBJECTS=$(C_OBJECTS) $(ASM_OBJECTS) font.o
 
 # Compilation rules
 $(OBJDIR)/%.o: $(SRCDIR)/%.c

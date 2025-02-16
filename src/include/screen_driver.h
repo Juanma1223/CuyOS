@@ -15,7 +15,18 @@ struct multiboot_tag_framebuffer {
     uint32_t framebuffer_height;
     uint8_t framebuffer_bpp;
     uint8_t framebuffer_type;
-    uint16_t reserved;
+    uint8_t reserved;
 };
 
-void parse_multiboot(void* addr);
+// PSF Font struct
+#include <stdint.h>
+
+struct PSF1_HEADER {
+        unsigned char magic[2];     /* Magic number */
+        unsigned char mode;         /* PSF font mode */
+        unsigned char charsize;     /* Character size */
+};
+
+
+
+void init_framebuffer(void* multiboot_addr);
