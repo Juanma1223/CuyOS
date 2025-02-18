@@ -46,7 +46,8 @@ void setupIDT()
         switch (vector)
         {
         case 32:
-            setIDTEntry(vector, (uint32_t)defaultInterruptHandler, CODE_SEGMENT_SELECTOR, INTERRUPT_GATE32);
+            // When timer interrupts the CPU, it saves it's context, pushes it into the stack and sends them to the timerInterruptHandler
+            setIDTEntry(vector, (uint32_t)timerInterruptHandler, CODE_SEGMENT_SELECTOR, INTERRUPT_GATE32);
             break;
         case 33:
             // IRQ1 is the interrupt request line associated with the keyboard in a typical x86 system

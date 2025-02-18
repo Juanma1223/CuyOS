@@ -54,17 +54,33 @@ void terminal_putchar(char c)
 		terminal_initialize();
 	}
 	unsigned char uc = c;
-	terminal_putentryat(uc, terminal_color, terminal_column, terminal_row);
+	// This is a backspace
+	if (c == '\b')
+	{
+		terminal_delete();
+		return;
+	}
+	// This is a line jump
 	if (c == '\n')
 	{
 		terminal_row++;
 		terminal_column = 0;
-		terminal_color = vga_entry_color(terminal_row + 1, VGA_COLOR_BLACK);
+		return;
 	}
+	terminal_putentryat(uc, terminal_color, terminal_column, terminal_row);
 	if (++terminal_column == VGA_WIDTH)
 	{
 		terminal_column = 0;
 		terminal_row++;
+	}
+}
+
+void terminal_delete()
+{
+	if (terminal_column > 0)
+	{
+		terminal_column--;
+		terminal_putentryat(' ', terminal_color, terminal_column, terminal_row);
 	}
 }
 
