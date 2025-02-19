@@ -1,6 +1,6 @@
 #include <stdint.h>
 
-const NAME_MAX_LEN = 64;
+// const int NAME_MAX_LEN = 64;
 
 typedef enum
 {
@@ -14,7 +14,7 @@ typedef struct process_t
     size_t pid;
     status_t status;
     struct cpu_status_t *context;
-    char name[NAME_MAX_LEN];
+    char name[64];
     struct process_t *next;
     struct process_t *prev;
 } process_t;
@@ -41,3 +41,4 @@ struct cpu_status_t {
 };
 
 struct cpu_status_t *schedule(struct cpu_status_t *context);
+process_t *create_process(char *name, void (*function)(void *), void *arg);

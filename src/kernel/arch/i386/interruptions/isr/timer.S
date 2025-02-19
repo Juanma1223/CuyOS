@@ -15,7 +15,7 @@ timerInterruptHandler:
     mov %ax, %fs
     mov %ax, %gs
 
-    # Timer interruptionn will receive the stack pointer as the argument
+    # Timer interruption will receive the stack pointer as the argument
     push %esp 
 
     # Call the C timer handler function

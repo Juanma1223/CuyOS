@@ -8,6 +8,17 @@
 #include <pic.h>
 #include <keyboard_driver.h>
 #include <screen_driver.h>
+#include <scheduler.h>
+
+void test_process1()
+{
+	printf("Process1");
+}
+
+void test_process2()
+{
+	printf("Process2");
+}
 
 // Receive multiboot headers information
 void kernelMain(void *multiboot_info_addr)
@@ -24,19 +35,12 @@ void kernelMain(void *multiboot_info_addr)
 	PICRemap(0x20, 0x28);
 	printf("PIC remapped correctly ! \n");
 
+	create_process("Process 1", *test_process1, NULL);
+	create_process("Process 2", *test_process2, NULL);
+
 	while (1)
 	{
 		// Main kernel loop
 		asm("hlt"); // Halt the CPU until the next interrupt
 	}
-}
-
-void test_process1()
-{
-	printf("Process1");
-}
-
-void test_process2()
-{
-	printf("Process2");
 }

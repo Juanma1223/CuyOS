@@ -79,9 +79,9 @@ struct cpu_status_t *schedule(struct cpu_status_t *context)
 
 process_t *create_process(char *name, void (*function)(void *), void *arg)
 {
-    process_t *process = alloc(sizeof(process_t));
+    process_t *process;
 
-    strncpy(process->name, name, NAME_MAX_LEN);
+    // strncpy(process->name, name, NAME_MAX_LEN);
     process->pid = next_free_pid++;
     process->status = READY;
     // Kernel stack segment
