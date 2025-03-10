@@ -47,4 +47,7 @@ void PICRemap(int offset1, int offset2)
 
     outb(PIC1_DATA, a1); // restore saved masks.
     outb(PIC2_DATA, a2);
+
+    // Enable interrupts
+    asm("sti");
 }

@@ -68,6 +68,4 @@ void setupIDT()
     idtr.limit = (uint16_t)sizeof(struct InterruptDescriptor) * IDT_MAX_DESCRIPTORS - 1;
 
     load_idt();
-    // Enable interrupts
-    asm("sti");
 }

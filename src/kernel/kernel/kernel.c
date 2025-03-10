@@ -10,6 +10,12 @@
 #include <screen_driver.h>
 #include <scheduler.h>
 
+void idle_main(void *arg)
+{
+	while (1)
+		asm("hlt");
+}
+
 void test_process1()
 {
 	printf("Process1");
@@ -24,6 +30,7 @@ void test_process2()
 void kernelMain(void *multiboot_info_addr)
 {
 	// terminal_initialize();
+	// create_process("Idle", *idle_main, NULL);
 	init_framebuffer(multiboot_info_addr);
 	printf("Welcome to CuyOS! \n");
 	setupGDT();
@@ -36,7 +43,7 @@ void kernelMain(void *multiboot_info_addr)
 	printf("PIC remapped correctly ! \n");
 
 	create_process("Process 1", *test_process1, NULL);
-	create_process("Process 2", *test_process2, NULL);
+	// create_process("Process 2", *test_process2, NULL);
 
 	while (1)
 	{

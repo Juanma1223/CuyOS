@@ -41,6 +41,7 @@ boot_stack_base:
 .global _start
 .type _start, @function
 _start:
+	cli
 	# Call the global constructors.
 	# call _init
     push %ebx
@@ -48,7 +49,6 @@ _start:
 	call kernelMain
 
 	# Hang if kernelMain unexpectedly returns.
-	cli
 1:	hlt
 	jmp 1b
 .size _start, . - _start

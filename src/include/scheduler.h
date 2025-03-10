@@ -20,24 +20,52 @@ typedef struct process_t
 } process_t;
 
 // This structure holds the cpu status on a given moment
-struct cpu_status_t {
-    uint32_t edi; // Callee-saved register
-    uint32_t esi; // Callee-saved register
-    uint32_t ebp; // Base pointer
-    uint32_t esp; // Stack pointer (optional, usually managed by hardware)
-    uint32_t ebx; // Callee-saved register
-    uint32_t edx; // Data register
-    uint32_t ecx; // Counter register
-    uint32_t eax; // Accumulator register
+// struct cpu_status_t
+// {
+//     uint32_t ss;         // Pushed by CPU (only if switching from user mode)
+//     uint32_t user_esp;   // Only if switching from user mode
+//     uint32_t eip;        // Pushed by CPU
+//     uint32_t error_code; // Only for some exceptions
+//     uint32_t interrupt_number;
 
-    uint32_t vector_number; // Interrupt vector number
-    uint32_t error_code;    // Error code (if applicable)
+//     uint32_t eax; // Last register pushed by pusha
+//     uint32_t ecx;
+//     uint32_t edx;
+//     uint32_t ebx;
+//     uint32_t esp; // ESP before pusha
+//     uint32_t ebp;
+//     uint32_t esi;
+//     uint32_t cs;  // Pushed by CPU
+//     uint32_t edi; // First register pushed by pusha
 
-    uint32_t iret_eip;   // Return instruction pointer
-    uint32_t iret_cs;    // Code segment
-    uint32_t iret_eflags;// CPU flags
-    uint32_t iret_esp;   // Stack pointer at interrupt time
-    uint32_t iret_ss;    // Stack segment
+//     // uint32_t gs;     // Manually pushed segment registers
+//     uint32_t eflags; // Pushed by CPU
+//     // uint32_t fs;
+//     // uint32_t es;
+//     // uint32_t ds; // First value pushed (highest address)
+// };
+
+struct cpu_status_t
+{
+    uint32_t ss;
+    uint32_t user_esp;
+    uint32_t esp; // ESP before pusha
+    uint32_t falopa2;
+    uint32_t eflags; // Pushed by CPU
+    uint32_t ebx;
+    uint32_t eax;    // Last register pushed by pusha
+    uint32_t ecx;
+    uint32_t edx;
+    uint32_t cs;
+    uint32_t esi;      // Pushed by CPU
+    uint32_t ebp;
+    uint32_t eip;
+    uint32_t edi; // First register pushed by pusha
+
+    // uint32_t gs;     // Manually pushed segment registers
+    // uint32_t fs;
+    // uint32_t es;
+    // uint32_t ds; // First value pushed (highest address)
 };
 
 struct cpu_status_t *schedule(struct cpu_status_t *context);
