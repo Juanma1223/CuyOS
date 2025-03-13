@@ -13,17 +13,25 @@
 void idle_main(void *arg)
 {
 	while (1)
+	{
 		asm("hlt");
+	}
 }
 
 void test_process1()
 {
-	printf("Process1");
+	while (1)
+	{
+		printf("Process1 \n");
+	}
 }
 
 void test_process2()
 {
-	printf("Process2");
+	while (1)
+	{
+		printf("Process2 \n");
+	}
 }
 
 // Receive multiboot headers information
@@ -37,13 +45,12 @@ void kernelMain(void *multiboot_info_addr)
 	printf("GDT initialized correctly ! \n");
 	setKeyboardScancode(2);
 	printf("Keyboard scancode set initialized correctly ! \n");
+	create_process("Process 1", *test_process1, NULL);
+	create_process("Process 2", *test_process2, NULL);
 	setupIDT();
 	printf("IDT initialized correctly ! \n");
 	PICRemap(0x20, 0x28);
 	printf("PIC remapped correctly ! \n");
-
-	create_process("Process 1", *test_process1, NULL);
-	// create_process("Process 2", *test_process2, NULL);
 
 	while (1)
 	{

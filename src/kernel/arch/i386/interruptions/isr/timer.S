@@ -3,10 +3,6 @@
 .type timerInterruptHandler, @function
 timerInterruptHandler:
     # Push CPU context to the stack
-    # push %ds
-    # push %es
-    # push %fs
-    # push %gs
     pusha  # Save general-purpose registers
 
     # mov $0x10, %ax
@@ -25,10 +21,6 @@ timerInterruptHandler:
 
     # Restore new CPU context from the new process
     popa  # Restore general-purpose registers from the new ESP
-    # pop %gs
-    # pop %fs
-    # pop %es
-    # pop %ds
 
     # Send End of Interrupt (EOI) signal to PIC
     mov $0x20, %al
