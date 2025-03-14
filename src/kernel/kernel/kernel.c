@@ -47,6 +47,7 @@ void kernelMain(void *multiboot_info_addr)
 	printf("Keyboard scancode set initialized correctly ! \n");
 	create_process("Process 1", *test_process1, NULL);
 	create_process("Process 2", *test_process2, NULL);
+	create_process("Idle", *idle_main, NULL);
 	setupIDT();
 	printf("IDT initialized correctly ! \n");
 	PICRemap(0x20, 0x28);

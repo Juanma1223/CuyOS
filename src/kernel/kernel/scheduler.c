@@ -1,5 +1,6 @@
 #include <idt.h>
 #include <scheduler.h>
+#include <stdlib.h>
 #define MAX_PROCESSES 32
 
 // Currently active processes
@@ -23,11 +24,11 @@ void add_process(struct process_t *new_process)
         // process_t *tail = NULL;
         // if (processes_list->prev)
         // {
-            // tail = processes_list->prev;
+        // tail = processes_list->prev;
         // }
         // else
         // {
-            // tail = processes_list;
+        // tail = processes_list;
         // }
         // processes_list->prev = new_process;
         new_process->next = processes_list;
@@ -39,7 +40,7 @@ void add_process(struct process_t *new_process)
 
 void delete_process(struct process_t *process)
 {
-    process->prev->next = process->next;    
+    process->prev->next = process->next;
     process->next->prev = process->prev;
 }
 
@@ -50,19 +51,23 @@ struct process_t *get_next_process()
 
 struct cpu_status_t *schedule(struct cpu_status_t *context)
 {
-    // current_process->context = context;
+    // current_process->context = *context;
     // current_process->status = READY;
+
+    // Alloc private space for the process
+    struct cpu_status_t *allocated_context = malloc(sizeof(struct cpu_status_t));
 
     if (current_process == NULL)
     {
         current_process = processes_list;
-        return current_process->context;
     }
 
     if (current_process->next != NULL)
     {
         current_process = current_process->next;
-    }else{
+    }
+    else
+    {
         current_process = processes_list;
     }
 
@@ -91,26 +96,41 @@ struct cpu_status_t *schedule(struct cpu_status_t *context)
     //         break;
     //     }
     // }
-    return current_process->context;
+
+    // Return a heap copy of the process information to keep the original PCB safe
+    allocated_context->edi = current_process->context.edi;
+    allocated_context->esi = current_process->context.esi;
+    allocated_context->esp = current_process->context.esp;
+    allocated_context->ebp = current_process->context.ebp;
+    allocated_context->ebx = current_process->context.ebx;
+    allocated_context->edx = current_process->context.edx;
+    allocated_context->ecx = current_process->context.ecx;
+    allocated_context->eax = current_process->context.eax;
+    allocated_context->eip = current_process->context.eip;
+    allocated_context->cs = current_process->context.cs;
+    allocated_context->eflags = current_process->context.eflags;
+
+    return allocated_context;
 }
 
 struct process_t *create_process(char *name, void (*function)(void *), void *arg)
 {
     struct process_t *process = &process_table[next_free_process++];
-    struct cpu_status_t *new_context = &(process->context);
+    struct cpu_status_t new_context = process->context;
 
     // strncpy(process->name, name, NAME_MAX_LEN);
     process->pid = next_free_pid++;
     process->status = READY;
     // Kernel stack segment
     // process->context->esp = alloc_stack();
-    new_context->esp = &process->stack;
-    new_context->eflags = 0x202;
+    new_context.esp = (uint32_t)&process->stack + 8192;
+    new_context.eflags = 0x202;
     // Kernel code segment
-    new_context->cs = 0x08;
-    new_context->eip = function; // Instruction pointer (EIP)
-    new_context->edi = (uint32_t)arg;      // First argument (EDI)
-    new_context->ebp = new_context->esp;                  // Base pointer reset
+    new_context.cs = 0x08;
+    new_context.eip = (uint32_t)function; // Instruction pointer (EIP)
+    // new_context->edi = (uint32_t)arg;
+    new_context.edi = 0x0;             // First argument (EDI)
+    new_context.ebp = new_context.esp; // Base pointer reset
     process->context = new_context;
 
     add_process(process);

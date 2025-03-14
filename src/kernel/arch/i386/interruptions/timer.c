@@ -31,7 +31,6 @@ struct cpu_status_t *timerHandler(struct cpu_status_t *context)
     // Every 10 ticks, fire the scheduler
     if (timer_ticks % 20 == 0)
     {
-        printf("Schedule! \n");
         return schedule(context);
     }
     return context;
