@@ -49,9 +49,26 @@ struct process_t *get_next_process()
     return processes_list->prev;
 }
 
+void copy_context(struct cpu_status_t prev_context, struct cpu_status_t *new_context)
+{
+    new_context->edi = prev_context.edi;
+    new_context->esi = prev_context.esi;
+    new_context->esp = prev_context.esp;
+    new_context->ebp = prev_context.ebp;
+    new_context->ebx = prev_context.ebx;
+    new_context->edx = prev_context.edx;
+    new_context->ecx = prev_context.ecx;
+    new_context->eax = prev_context.eax;
+    new_context->eip = prev_context.eip;
+    new_context->cs = 0x08;
+    new_context->eflags = 0x202;
+}
+
 struct cpu_status_t *schedule(struct cpu_status_t *context)
 {
     // current_process->context = *context;
+    // Copy current context to restore it later
+    copy_context(*context, &current_process->context);
     // current_process->status = READY;
 
     // Alloc private space for the process
@@ -98,17 +115,18 @@ struct cpu_status_t *schedule(struct cpu_status_t *context)
     // }
 
     // Return a heap copy of the process information to keep the original PCB safe
-    allocated_context->edi = current_process->context.edi;
-    allocated_context->esi = current_process->context.esi;
-    allocated_context->esp = current_process->context.esp;
-    allocated_context->ebp = current_process->context.ebp;
-    allocated_context->ebx = current_process->context.ebx;
-    allocated_context->edx = current_process->context.edx;
-    allocated_context->ecx = current_process->context.ecx;
-    allocated_context->eax = current_process->context.eax;
-    allocated_context->eip = current_process->context.eip;
-    allocated_context->cs = current_process->context.cs;
-    allocated_context->eflags = current_process->context.eflags;
+    copy_context(current_process->context,allocated_context);
+    // allocated_context->edi = current_process->context.edi;
+    // allocated_context->esi = current_process->context.esi;
+    // allocated_context->esp = current_process->context.esp;
+    // allocated_context->ebp = current_process->context.ebp;
+    // allocated_context->ebx = current_process->context.ebx;
+    // allocated_context->edx = current_process->context.edx;
+    // allocated_context->ecx = current_process->context.ecx;
+    // allocated_context->eax = current_process->context.eax;
+    // allocated_context->eip = current_process->context.eip;
+    // allocated_context->cs = current_process->context.cs;
+    // allocated_context->eflags = current_process->context.eflags;
 
     return allocated_context;
 }
