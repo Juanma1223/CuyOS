@@ -23,7 +23,7 @@ To compile CuyOS, follow these steps:
    - Install Clang and necessary dependencies:
      ```bash
      sudo apt update
-     sudo apt install clang lld lldb libc-dev-i386 gcc-multilib
+    sudo apt install clang lld lldb libc-dev-i386 gcc-multilib grub xorriso mtools qemu-system-i386
      ```
 
 2. **Clone the Repository:**
