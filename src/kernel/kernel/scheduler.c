@@ -74,7 +74,7 @@ struct cpu_status_t *schedule(struct cpu_status_t *context)
     // Alloc private space for the process
     struct cpu_status_t *allocated_context = malloc(sizeof(struct cpu_status_t));
 
-    if (current_process == NULL)
+    if (current_process == NULL)poner a ejecutar 
     {
         current_process = processes_list;
     }
@@ -116,17 +116,6 @@ struct cpu_status_t *schedule(struct cpu_status_t *context)
 
     // Return a heap copy of the process information to keep the original PCB safe
     copy_context(current_process->context,allocated_context);
-    // allocated_context->edi = current_process->context.edi;
-    // allocated_context->esi = current_process->context.esi;
-    // allocated_context->esp = current_process->context.esp;
-    // allocated_context->ebp = current_process->context.ebp;
-    // allocated_context->ebx = current_process->context.ebx;
-    // allocated_context->edx = current_process->context.edx;
-    // allocated_context->ecx = current_process->context.ecx;
-    // allocated_context->eax = current_process->context.eax;
-    // allocated_context->eip = current_process->context.eip;
-    // allocated_context->cs = current_process->context.cs;
-    // allocated_context->eflags = current_process->context.eflags;
 
     return allocated_context;
 }
