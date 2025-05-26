@@ -74,7 +74,7 @@ struct cpu_status_t *schedule(struct cpu_status_t *context)
     // Alloc private space for the process
     struct cpu_status_t *allocated_context = malloc(sizeof(struct cpu_status_t));
 
-    if (current_process == NULL)poner a ejecutar 
+    if (current_process == NULL)
     {
         current_process = processes_list;
     }
@@ -87,32 +87,6 @@ struct cpu_status_t *schedule(struct cpu_status_t *context)
     {
         current_process = processes_list;
     }
-
-    // This loop checks dead processes and kills them
-    // while (1)
-    // {
-    //     process_t *prev_process = current_process;
-    //     if (current_process->next != NULL && current_process->next != current_process)
-    //     {
-    //         current_process = current_process->next;
-    //     }
-    //     else
-    //     {
-    //         current_process = processes_list;
-    //     }
-
-    //     if (current_process != NULL && current_process->status == DEAD)
-    //     {
-    //         // We need to delete dead processes
-    //         delete_process(current_process);
-    //     }
-    //     else
-    //     {
-
-    //         current_process->status = RUNNING;
-    //         break;
-    //     }
-    // }
 
     // Return a heap copy of the process information to keep the original PCB safe
     copy_context(current_process->context,allocated_context);
