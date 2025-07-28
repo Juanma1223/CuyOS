@@ -12,4 +12,4 @@ menuentry "cuyos" {
 	multiboot2 /boot/cuyos.kernel
 }
 EOF
-grub2-mkrescue -o cuyos.iso isodir
+grub-mkrescue -o cuyos.iso isodir
