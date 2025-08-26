@@ -1,3 +1,4 @@
+#include "keyboard.h"
 #include <stdio.h>
 #include <io.h>
 #include <stdbool.h>
@@ -92,15 +93,10 @@ char scancodeTable[SCANCODE_MAX + 1] = {
 // This 8 bit variable holds modifiers in case they have been applied
 uint8_t currentModifiers = 0;
 
-// Store all pressed keys up to 256, this struct holds useful information about the key pressed event
-typedef struct
-{
-    uint8_t code;
-    uint8_t statusMask;
-} keyEvent;
-
-keyEvent keyboardBuffer[MAX_KEYB_BUFFER_SIZE];
 uint8_t buffPosition = 0;
+
+// Store all pressed keys up to 256, this struct holds useful information about the key pressed event
+keyEvent keyboardBuffer[MAX_KEYB_BUFFER_SIZE];
 
 // This function applies a modifier in case the scancode represents one
 bool applyModifier(int scancode)

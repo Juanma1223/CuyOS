@@ -6,6 +6,7 @@
 #include <tty.h>
 #include "vga.h"
 #include "screen_driver.h"
+#include <keyboard.h>
 
 // This file defines the terminal functionality, in this case, using VGA buffer directly
 
@@ -60,9 +61,20 @@ void terminal_putchar(char c)
 		terminal_delete();
 		return;
 	}
-	// This is a line jump
+	// This is a line jump, a command is entered
 	if (c == '\n')
 	{
+		// Start position
+		size_t pos = (terminal_row * VGA_WIDTH);
+		// Print from found position up to the current buffPosition (excluding '\n')
+		size_t printPos = pos;
+		char ch = scancodeTable[keyboardBuffer[printPos].code];
+		while (ch != '\n' && printPos <= MAX_KEYB_BUFFER_SIZE) {
+			terminal_putchar(ch);
+			printPos = (printPos + 1) % MAX_KEYB_BUFFER_SIZE;
+			char ch = scancodeTable[keyboardBuffer[printPos].code];
+		}
+
 		terminal_row++;
 		terminal_column = 0;
 		return;
