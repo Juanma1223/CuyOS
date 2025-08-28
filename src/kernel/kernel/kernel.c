@@ -51,7 +51,7 @@ void kernelMain(void *multiboot_info_addr)
 	printf("IDT initialized correctly ! \n");
 	PICRemap(0x20, 0x28);
 	printf("PIC remapped correctly ! \n");
-
+	terminal_listen_commands();
 	while (1)
 	{
 		// Main kernel loop

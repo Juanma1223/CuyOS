@@ -22,6 +22,7 @@ static size_t terminal_row;
 static size_t terminal_column;
 int terminal_color = WHITE;
 int command_color = GREEN;
+bool listen_commands = false;
 static uint16_t *terminal_buffer;
 
 // Buffer to store the last entered line
@@ -34,6 +35,10 @@ int strcmp(const char *s1, const char *s2) {
         s2++;
     }
     return *(const unsigned char *)s1 - *(const unsigned char *)s2;
+}
+
+void terminal_listen_commands(){
+    listen_commands = true;
 }
 
 
@@ -60,6 +65,26 @@ void terminal_putentryat(unsigned char c, int color, size_t x, size_t y)
 	draw_char(c, x, y, color);
 }
 
+// Helper function to handle commands
+static void handle_command(const char* cmd) {
+    if (strcmp(cmd, "clear") == 0) {
+        terminal_initialize();
+    } else if (strcmp(cmd, "change") == 0) {
+        if (terminal_color == WHITE) {
+            terminal_color = YELLOW;
+            command_color = MAGENTA;
+        } else {
+            terminal_color = WHITE;
+            command_color = GREEN;
+        }
+    } else {
+        int previous_color = terminal_color;
+        terminal_color = RED;
+        terminal_writestring("Not a valid command!");
+        terminal_color = previous_color;
+    }
+}
+
 void terminal_putchar(char c)
 {
     // If terminal has reached maximum rows, reset it
@@ -80,8 +105,6 @@ void terminal_putchar(char c)
         terminal_row++;
         terminal_column = 0;
 
-		// This logic is only used on the demostration, it should be moved to a different function or file
-
         // Save the characters from keyboardBuffer into last_input_line
         int idx = 0;
         for(int i = 0; i < VGA_WIDTH && idx < MAX_INPUT_LINE - 1; i++){
@@ -93,23 +116,14 @@ void terminal_putchar(char c)
         }
         last_input_line[idx] = '\0'; // Null-terminate the string
 
-        // Check if the entered line is "clear"
-        if (strcmp(last_input_line, "clear") == 0) {
-            terminal_initialize();
-        }
-
-		if (strcmp(last_input_line, "change") == 0) {
-            if(terminal_color == WHITE){
-				terminal_color = RED;
-				command_color = MAGENTA;
-			}else{
-				terminal_color = WHITE;
-				command_color = GREEN;
-			}
+        // Use the helper function to handle commands
+        if(listen_commands){
+            handle_command(last_input_line);
         }
 
         clearKeyboardBuffer();
         terminal_row++;
+        terminal_column = 0;
         return;
     }
     terminal_putentryat(uc, terminal_color, terminal_column, terminal_row);
