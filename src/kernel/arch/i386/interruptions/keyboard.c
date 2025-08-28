@@ -157,3 +157,11 @@ void keyboardDriver()
         removeModifier(scancode);
     }
 }
+
+void clearKeyboardBuffer() {
+    for (int i = 0; i < MAX_KEYB_BUFFER_SIZE; ++i) {
+        keyboardBuffer[i].code = 0;
+        keyboardBuffer[i].statusMask = 0;
+    }
+    buffPosition = 0;
+}

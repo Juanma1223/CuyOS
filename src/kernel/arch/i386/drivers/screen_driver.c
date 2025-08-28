@@ -1,8 +1,6 @@
 #include <screen_driver.h>
 #include <image.h>
 
-const int WHITE = 0xFFFFFF;
-const int BLACK = 0x000000;
 
 // Lookup table for font characters positions
 char characters_table[128] = {
@@ -43,7 +41,7 @@ void draw_square(uint64_t *fb, uint32_t pitch, uint32_t x, uint32_t y, uint32_t 
     }
 }
 
-void draw_char(char character, uint16_t x, uint16_t y)
+void draw_char(char character, uint16_t x, uint16_t y, int color)
 {
     // Get font memory positionn
     extern char _binary_font_psf_start;
@@ -60,7 +58,7 @@ void draw_char(char character, uint16_t x, uint16_t y)
             uint64_t *fb_addr = (uint64_t *)fb->framebuffer_addr;
             if (pixel == 1)
             {
-                fb_addr[pixel_pos] = WHITE; // Set pixel color
+                fb_addr[pixel_pos] = color; // Set pixel color
             }
             else
             {
@@ -70,17 +68,6 @@ void draw_char(char character, uint16_t x, uint16_t y)
         // Go to the following bitmap
     }
     selected_glyph = selected_glyph + 1;
-}
-
-void setup_text_font()
-{
-    // Font has been linked into the binary
-    draw_char('a', 0, 0);
-    draw_char('b', 1, 0);
-    draw_char('c', 2, 0);
-    draw_char('d', 3, 0);
-    draw_char('e', 4, 0);
-    draw_char('f', 5, 0);
 }
 
 void init_framebuffer(void *multiboot_addr)

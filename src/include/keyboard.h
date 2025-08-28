@@ -16,4 +16,6 @@ typedef struct
 extern keyEvent keyboardBuffer[MAX_KEYB_BUFFER_SIZE];
 extern char scancodeTable[SCANCODE_MAX + 1];
 
+void clearKeyboardBuffer();
+
 #endif

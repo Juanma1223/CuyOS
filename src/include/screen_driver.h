@@ -7,6 +7,24 @@ struct multiboot_tag
     uint32_t size;
 };
 
+// RGB color constants for terminal use
+#define WHITE        0xFFFFFF
+#define BLACK        0x000000
+#define RED          0xFF0000
+#define GREEN        0x00FF00
+#define BLUE         0x0000FF
+#define CYAN         0x00FFFF
+#define MAGENTA      0xFF00FF
+#define YELLOW       0xFFFF00
+#define BROWN        0xA52A2A
+#define LIGHT_GREY   0xD3D3D3
+#define DARK_GREY    0xA9A9A9
+#define LIGHT_BLUE   0xADD8E6
+#define LIGHT_GREEN  0x90EE90
+#define LIGHT_CYAN   0xE0FFFF
+#define LIGHT_RED    0xFFA07A
+#define LIGHT_MAGENTA 0xFF77FF
+
 struct multiboot_tag_framebuffer
 {
     uint32_t type;
@@ -31,4 +49,4 @@ struct PSF1_HEADER
 };
 
 void init_framebuffer(void *multiboot_addr);
-void draw_char(char character, uint16_t x, uint16_t y);
+void draw_char(char character, uint16_t x, uint16_t y, int color);
